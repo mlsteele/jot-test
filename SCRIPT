@@ -1,0 +1,8 @@
+SCRIPT
+
+listen
+connect
+push up
+push down
+disconnect
+reconnect up
