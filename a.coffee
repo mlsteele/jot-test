@@ -3,21 +3,22 @@ jot = require 'json-over-tcp'
 
 PORT = 2057
 
-closed = no
-
 server = jot.createServer PORT
-# server.on 'listening'
 server.on 'connection', (socket) ->
+  console.log "connection established"
+
   socket.on 'data', (data) ->
-    console.log data
+    console.log "received data: #{JSON.stringify data}"
 
-  socket.write gotcha: yes
+  plantTimeout 3000, ->
+    console.log "pushing down..."
+    socket.write push: 'down'
 
-  plantTimeout 500, ->
+  socket.on 'close', ->
+    console.log "disconnected"
+
+  plantTimeout 5000, ->
+    console.log "disconnecting..."
     socket.destroy()
-    unless closed
-      console.log "closing server"
-      server.close()
-      closed = yes
 
 server.listen PORT

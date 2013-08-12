@@ -1,11 +1,21 @@
+plantTimeout = (ms, cb) -> setTimeout cb, ms
 jot = require 'json-over-tcp'
 
 PORT = 2057
 
-socket = jot.connect PORT, ->
-  socket.write hey: 'yah'
+do connect = ->
+  socket = jot.connect PORT, ->
+    console.log "connection established"
 
-  socket.on 'data', (data) ->
-    console.log data
+    socket.on 'data', (data) ->
+      console.log "received data: #{JSON.stringify data}"
 
-  socket.write 'bye'
+    plantTimeout 1000, ->
+      console.log "pushing up..."
+      socket.write push: 'up'
+
+    socket.on 'close', ->
+      console.log "disconnected"
+      plantTimeout 1000, ->
+        console.log "reconnecting..."
+        connect()
