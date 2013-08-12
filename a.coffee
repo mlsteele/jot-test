@@ -1,9 +1,11 @@
 plantTimeout = (ms, cb) -> setTimeout cb, ms
 jot = require 'json-over-tcp'
+net = require 'net'
 
 PORT = 2057
 
-server = jot.createServer 'foo'
+server = jot.createServer ->
+
 server.on 'connection', (socket) ->
   console.log "connection established"
 
