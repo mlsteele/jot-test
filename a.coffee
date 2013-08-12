@@ -3,9 +3,12 @@ jot = require 'json-over-tcp'
 
 PORT = 2057
 
-server = jot.createServer PORT
+server = jot.createServer 'foo'
 server.on 'connection', (socket) ->
   console.log "connection established"
+
+  socket.on 'error', ->
+    console.log "socket error"
 
   socket.on 'data', (data) ->
     console.log "received data: #{JSON.stringify data}"

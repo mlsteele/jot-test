@@ -19,3 +19,9 @@ do connect = ->
       plantTimeout 1000, ->
         console.log "reconnecting..."
         connect()
+
+  socket.on 'error', ->
+    console.log "socket error."
+    plantTimeout 500, ->
+      console.log "reconnecting..."
+      connect()
